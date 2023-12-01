@@ -153,7 +153,7 @@ function limpiarForm()
     id = null;
     index = null;
     document.getElementById("txtId").value = "";
-    document.getElementById("btnCancelar").style.display = "none";
+    document.getElementById("btnCancelar").disabled = false;
     document.getElementById("btnEliminar").style.display = "none";
     document.getElementById("btnGuardar").disabled = false;
     $form.reset();
