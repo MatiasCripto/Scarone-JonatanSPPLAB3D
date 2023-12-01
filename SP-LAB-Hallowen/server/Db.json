@@ -1,0 +1,44 @@
+{
+  "monstruos": [
+    {
+      "id": 1,
+      "nombre": "Jonatan",
+      "alias": "Johnny",
+      "miedo": 88,
+      "defensa": "Crucifijo",
+      "tipo": "Esqueleto"
+    },
+    {
+      "id": 2,
+      "nombre": "aaaa",
+      "tipo": "Fantasma",
+      "alias": "bbbb",
+      "miedo": 67,
+      "defensa": "Estaca"
+    },
+    {
+      "id": 3,
+      "nombre": "Ana",
+      "alias": "Anita",
+      "miedo": 35,
+      "defensa": "Estaca",
+      "tipo": "Bruja"
+    },
+    {
+      "id": 1701392647409,
+      "nombre": "josecito",
+      "tipo": "Vampiro",
+      "alias": "jose",
+      "miedo": 100,
+      "defensa": "Crucifijo"
+    }
+  ],
+  "tipos": [
+    "Esqueleto",
+    "Zombie",
+    "Vampiro",
+    "Fantasma",
+    "Bruja",
+    "Hombre lobo"
+  ]
+}
