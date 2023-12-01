@@ -9,7 +9,24 @@ const crearTabla = (data)=>
     return tabla;
 };
 
-const crearCabecera = (elemento)=>
+// const crearCabecera = (elemento)=>
+// {
+//     const thead = document.createElement('thead');
+//     const headRow = document.createElement('tr');
+//     headRow.setAttribute("class", "cabecera"); 
+//     for (const key in elemento) 
+//     {
+//         if(key === "id") continue; // Oculto id.
+//         const th = document.createElement('th');
+//         th.setAttribute("class", "ths");
+//         th.textContent = key;
+//         headRow.appendChild(th);
+//     }
+//     thead.appendChild(headRow);
+//     return thead;
+// };
+
+const crearCabecera = (elemento, index) =>
 {
     const thead = document.createElement('thead');
     const headRow = document.createElement('tr');
@@ -20,6 +37,7 @@ const crearCabecera = (elemento)=>
         const th = document.createElement('th');
         th.setAttribute("class", "ths");
         th.textContent = key;
+        th.dataset.index = index;  
         headRow.appendChild(th);
     }
     thead.appendChild(headRow);

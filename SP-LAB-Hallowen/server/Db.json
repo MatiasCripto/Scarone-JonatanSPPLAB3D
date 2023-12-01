@@ -31,6 +31,22 @@
       "alias": "jose",
       "miedo": 100,
       "defensa": "Crucifijo"
+    },
+    {
+      "id": 1701463013952,
+      "nombre": "cristian",
+      "tipo": "Vampiro",
+      "alias": "chbaus",
+      "miedo": 42,
+      "defensa": "Pocion"
+    },
+    {
+      "id": 1701472837592,
+      "nombre": "juancito",
+      "tipo": "Vampiro",
+      "alias": "juan",
+      "miedo": 63,
+      "defensa": "Pocion"
     }
   ],
   "tipos": [

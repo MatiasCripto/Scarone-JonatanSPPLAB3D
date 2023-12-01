@@ -27,6 +27,7 @@ const $select = document.getElementById("filtro");
 const listaTipo = await getTiposAjax(); 
 const lista = [];
 const lista2 = await getAnunciosAjax(); 
+
 console.log(lista);
 lista2.forEach(element =>  {
     let bicho = new Monstruo(element.id, element.nombre, element.tipo, element.alias, element.miedo, element.defensa);
@@ -171,22 +172,87 @@ function cargarTipos(lista)
     });
 }
 
-function filtrarTabla(contenedor, lista, filtro)
-{
-    if(filtro != "Todos")
-    {
-        let listaFiltrada = lista.filter((elemento)=>elemento.defensa == filtro); // FILTRO
-        actualizarTabla(contenedor, listaFiltrada);
-        banderaFiltros = true;
-        return listaFiltrada;
+function filtrarTabla(contenedor, lista, filtro) {
+    let listaFiltrada;
+    if (filtro !== "Todos") {
+        listaFiltrada = lista.filter((elemento) => elemento.tipo == filtro); 
+    } else {
+        listaFiltrada = lista;
     }
-    else
-    {
-        actualizarTabla(contenedor, lista);
-        banderaFiltros = false;
-        return lista;
-    }
+
+    actualizarTabla(contenedor, listaFiltrada);
+    
+    // Calcula y muestra la fuerza mínima y máxima
+    calcularFuerzaMinMax(listaFiltrada);
+
+    banderaFiltros = filtro !== "Todos";
+    return listaFiltrada;
 }
+
+function calcularFuerzaMinMax(lista) {
+    const fuerzas = lista.map(monstruo => parseInt(monstruo.miedo));
+    
+    const fuerzaMin = Math.min(...fuerzas);
+    const fuerzaMax = Math.max(...fuerzas);
+    
+    document.getElementById("fuerzaMin").value = fuerzaMin;
+    document.getElementById("fuerzaMax").value = fuerzaMax;
+}
+
+
+function aplicarColumnasSeleccionadas(columnasSeleccionadas) {
+    const tabla = document.getElementById('tabla'); 
+    const filas = tabla.querySelectorAll('tr'); 
+
+    
+    filas.forEach((fila) => {
+        const celdas = fila.querySelectorAll('td'); 
+
+        
+        celdas.forEach((celda, index) => {
+            if (columnasSeleccionadas.includes(index)) {
+                celda.style.display = ''; // Muestra la celda
+            } else {
+                celda.style.display = 'none'; // Oculta la celda
+            }
+        });
+    });
+}
+
+
+window.addEventListener('load', () => {    
+    let listaColumnasSeleccionadas = obtenerColumnasSeleccionadas();
+    
+    aplicarColumnasSeleccionadas(listaColumnasSeleccionadas);
+   
+    console.log('Columnas Seleccionadas:', listaColumnasSeleccionadas);
+});
+
+
+const checkboxes = document.querySelectorAll('.chbox');
+
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+        const columnasSeleccionadas = obtenerColumnasSeleccionadas();
+        aplicarColumnasSeleccionadas(columnasSeleccionadas);
+        
+        // Llama a guardarColumnasSeleccionadas aquí
+        guardarColumnasSeleccionadas(columnasSeleccionadas);
+    });
+});
+
+
+function guardarColumnasSeleccionadas(columnasSeleccionadas) {
+    localStorage.setItem('columnasSeleccionadas', JSON.stringify(columnasSeleccionadas));
+}
+
+
+function obtenerColumnasSeleccionadas() {
+    const columnasGuardadas = localStorage.getItem('columnasSeleccionadas');
+    return columnasGuardadas ? JSON.parse(columnasGuardadas) : [];
+}
+
+
 
 $select.addEventListener("change", () => 
 {
@@ -195,25 +261,33 @@ $select.addEventListener("change", () =>
     limpiarForm();
 });
 
+function obtenerColumnasOrdenadas() {
+    const columnas = document.querySelectorAll('.ths');
+    const columnasOrdenadas = Array.from(columnas).map((columna) => parseInt(columna.dataset.index));
+    return columnasOrdenadas;
+}
+
 // CHECKBOXES
-const modificarTabla = () =>
-{
+const modificarTabla = () => {
     const checked = {};
-    checkbox.forEach((elem) => {checked[elem.name] = elem.checked});
-    listadoCheck = listaFiltrada.map((elem) => // MAPEO
-    {
+    checkbox.forEach((elem) => { checked[elem.name] = elem.checked });
+    listaColumnasSeleccionadas = obtenerColumnasSeleccionadas();
+    listadoDatos = listaFiltrada.map((elem) => {
         const newElement = {};
-        for (const key in elem)
-        {
-            if(key == "id" || checked[key] == true)
-            {
+        for (const key in elem) {
+            if (key == "id" || listaColumnasSeleccionadas.includes(key)) {
                 newElement[key] = elem[key];
             }
         }
         return newElement;
     });
-    actualizarTabla($containerTabla, listadoCheck);
-};
 
+    // Obtener las columnas seleccionadas y aplicarlas a la tabla
+    aplicarColumnasSeleccionadas(listaColumnasSeleccionadas);
+    
+    // Guardar el listadoDatos en localStorage
+    localStorage.setItem('columnasSeleccionadas', JSON.stringify(listaColumnasSeleccionadas));
+};
 checkbox.forEach((elem) => elem.addEventListener("click", modificarTabla));
+
 
